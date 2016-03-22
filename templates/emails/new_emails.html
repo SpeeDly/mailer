@@ -1,0 +1,32 @@
+{% extends "master.html" %}
+
+{% block content %}
+<div class="column">
+    <form id="email_form" action="." method="POST">
+        {% csrf_token %}
+        <ul>
+            <li>
+                <label for="from">From:</label> <input type="text" name="from" id="from">
+            </li>
+            <li>
+                <label for="to">To:</label> <input type="text" name="to" id="to">
+            </li>
+            <li>
+                <label for="cc">CC:</label> <input type="text" name="cc" id="cc">
+            </li>
+            <li>
+                <label for="bcc">BCC:</label> <input type="text" name="bcc" id="bcc">
+            </li>
+            <li>
+                <label for="subject">Subject:</label> <input type="text" name="subject" id="subject">
+            </li>
+            <li>
+                <textarea name="message" id="message" cols="30" rows="10"></textarea>
+            </li>
+            <li>
+                <input type="submit" value="Send">
+            </li>
+        </ul>
+    </form>
+</div>
+{% endblock content %}
