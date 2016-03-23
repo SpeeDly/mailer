@@ -18,6 +18,14 @@ MESSAGE = {
             'type': 'to'}],
 }
 
+MANDRILL_STATUSES = [
+    "sent",
+    "queued",
+    "scheduled",
+    "rejected",
+    "invalid"
+]
+
 class MandrillEmailEngine:
 
     def __init__(self, *args, **kwargs):
@@ -41,6 +49,23 @@ class MandrillEmailEngine:
                 "type": "cc"
                 })
 
+    def parse_email_status(self, response):
+        parsed_response = response.json()
+        receivers_status = {}
+        try:
+            for item in parsed_response:
+                email = item['email']
+                status = item['status']
+                if status not in MANDRILL_STATUSES:
+                    status = 'unknown'
+                receivers_status[email] = status
+        except (KeyError, TypeError):
+            pass
+            # raise AnymailRequestsAPIError("Invalid Mandrill API response format")
+        return receivers_status
+
+    def get_api_call_data(self):
+        return self.message
 
     def send(self):
         result = self.mandrill_client.messages.send(message=self.message, async=False)
@@ -58,10 +83,31 @@ class MailGunEmailEngine:
         }
         self.email["cc"] = kwargs.pop("carbon_copies", [])
 
+    def parse_email_status(self, response):
+        parsed_response = response.json()
+        try:
+            message_id = parsed_response["id"]
+            mailgun_message = parsed_response["message"]
+        except (KeyError, TypeError):
+            pass
+            # raise AnymailRequestsAPIError("Invalid Mailgun API response format",
+            #                               email_message=message, payload=payload, response=response)
+        if not mailgun_message == ("Queued. Thank you."):
+            pass
+            # raise AnymailRequestsAPIError("Unrecognized Mailgun API message '%s'" % mailgun_message,
+            #                               email_message=message, payload=payload, response=response)
+
+        return {"status": "sent"}
+
+    def get_api_call_data(self):
+        return self.email
+
     def send(self):
         result = requests.post(
             settings.MAILGUN_SMPT,
             auth=("api", settings.MAILGUN_APIKEY),
             data=self.email)
+
+        result = self.parse_email_status(result)
 
         return result
