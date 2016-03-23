@@ -140,3 +140,9 @@ MANDRILL_APIKEY = "fXoeJhGmhEE6BAml5A89RQ"
 # email zhuhov@gmail.com
 # pass: Mypass123!
 MAILGUN_APIKEY = "key-2e9c7ad2bd44e35f15efb2ea6f8f083f"
+MAILGUN_SMPT = "https://api.mailgun.net/v3/sandbox6ab8421b90e3479792deae38ac89fcb8.mailgun.org/messages"
+
+EMAIL_ENGINES = [
+    'mailer.utils.engines.MailGunEmailEngine',
+    'mailer.utils.engines.MandrillEmailEngine'
+]
