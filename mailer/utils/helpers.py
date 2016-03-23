@@ -55,5 +55,11 @@ def parse_to_html(message):
 
     message = message.replace("']", "'>")
 
-
     return message
+
+
+def get_object_or_None(klass, *args, **kwargs):
+    try:
+        return klass._default_manager.get(*args, **kwargs)
+    except klass.DoesNotExist:
+        return None

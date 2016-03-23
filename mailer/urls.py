@@ -21,5 +21,6 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^', include('mailer.users.urls')),
     url(r'^', include('mailer.emails.urls')),
 ]

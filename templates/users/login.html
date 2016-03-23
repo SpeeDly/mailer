@@ -1,0 +1,24 @@
+{% extends "master.html" %}
+
+{% block content %}
+<div class="column">
+    <div class="box">
+        <form method="POST">
+            {% csrf_token %}
+            <ul>
+                <li>
+                    {% if form.email.errors %} {{ form.email.errors }}{% endif %}
+                    <label for="id_email">Email:</label> {{ form.email }}
+                </li>
+                <li>
+                    {% if form.password.errors %} {{ form.password.errors }}{% endif %}
+                    <label for="id_password">password:</label> {{ form.password }}
+                </li>
+                <li>
+                    <input type="submit" value="Login">
+                </li>
+            </ul>
+        </form>
+    </div>
+</div>
+{% endblock content %}

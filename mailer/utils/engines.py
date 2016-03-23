@@ -87,6 +87,7 @@ class MandrillEmailEngine:
 
     def send(self):
         result = self.mandrill_client.messages.send(message=self.message, async=False)
+        print(result)
         result = self.parse_email_status(result)
         return result
 
@@ -127,6 +128,8 @@ class MailGunEmailEngine:
             settings.MAILGUN_SMPT,
             auth=("api", settings.MAILGUN_APIKEY),
             data=self.email)
+
+        print(result)
 
         result = self.parse_email_status(result)
 

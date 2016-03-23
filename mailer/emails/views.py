@@ -10,18 +10,14 @@ def home(request):
     return render(request, "home.html", {})
 
 def new_email(request):
-    message = ""
-
+    print(request.user.username)
     if request.method == "POST":
         form = EmailForm(request.POST)
-        message = "Not so good"
         if form.is_valid():
             data = form.cleaned_data
             data["message"] = parse_to_html(data["message"])
-            print(data["message"])
             email = Email(**data)
             result = email.send()
-            print(result)
             messages.add_message(request, messages.INFO, str(result))
             return redirect(reverse('finish_email'))
 

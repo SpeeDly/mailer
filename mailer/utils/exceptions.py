@@ -16,7 +16,6 @@ class MailerError(Exception):
         self.email_message = kwargs.pop('email_message', None)
         self.status_code = kwargs.pop('status_code', None)
         if isinstance(self, HTTPError):
-            # must leave response in kwargs for HTTPError
             self.response = kwargs.get('response', None)
         else:
             self.response = kwargs.pop('response', None)
