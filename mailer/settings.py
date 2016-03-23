@@ -27,7 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -129,3 +128,15 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+
+
+# Mail providers api Keys
+SENDGRID_APIKEY = ""
+
+# email zhuhov@gmail.com / speedly
+# pass: Mypass123!
+MANDRILL_APIKEY = "fXoeJhGmhEE6BAml5A89RQ"
+
+# email zhuhov@gmail.com
+# pass: Mypass123!
+MAILGUN_APIKEY = "key-2e9c7ad2bd44e35f15efb2ea6f8f083f"

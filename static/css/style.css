@@ -45,7 +45,7 @@ a img {
 article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
   display: block; }
 
-input[type="text"], input[type="button"], input[type="submit"] {
+input[type="text"], input[type="button"], input[type="submit"], input[type="email"] {
   -webkit-appearance: none; }
 
 header {

@@ -2,26 +2,29 @@
 
 {% block content %}
 <div class="column">
+    {{ message }}
     <form id="email_form" action="." method="POST">
         {% csrf_token %}
         <ul>
             <li>
-                <label for="from">From:</label> <input type="text" name="from" id="from">
+                {% if form.sender.errors %} {{ form.sender.errors }}{% endif %}
+                <label for="id_sender">From:</label> {{ form.sender }}
             </li>
             <li>
-                <label for="to">To:</label> <input type="text" name="to" id="to">
+                {% if form.recipients.errors %} {{ form.recipients.errors }}{% endif %}
+                <label for="id_to">To:</label> {{ form.recipients }}
             </li>
             <li>
-                <label for="cc">CC:</label> <input type="text" name="cc" id="cc">
+                {% if form.cc.errors %} {{ form.cc.errors }}{% endif %}
+                <label for="id_cc">CC:</label> {{ form.cc }}
             </li>
             <li>
-                <label for="bcc">BCC:</label> <input type="text" name="bcc" id="bcc">
+                {% if form.subject.errors %} {{ form.subject.errors }}{% endif %}
+                <label for="id_subject">Subject:</label> {{ form.subject }}
             </li>
             <li>
-                <label for="subject">Subject:</label> <input type="text" name="subject" id="subject">
-            </li>
-            <li>
-                <textarea name="message" id="message" cols="30" rows="10"></textarea>
+                {% if form.message.errors %} {{ form.message.errors }}{% endif %}
+                 {{ form.message }}
             </li>
             <li>
                 <input type="submit" value="Send">
