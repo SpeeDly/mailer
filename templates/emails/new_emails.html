@@ -2,8 +2,7 @@
 
 {% block content %}
 <div class="column">
-    {{ message }}
-    <form id="email_form" action="." method="POST">
+    <form id="email_form" class="box" action="." method="POST">
         {% csrf_token %}
         <ul>
             <li>
@@ -11,8 +10,8 @@
                 <label for="id_sender">From:</label> {{ form.sender }}
             </li>
             <li>
-                {% if form.recipients.errors %} {{ form.recipients.errors }}{% endif %}
-                <label for="id_to">To:</label> {{ form.recipients }}
+                {% if form.receivers.errors %} {{ form.receivers.errors }}{% endif %}
+                <label for="id_to">To:</label> {{ form.receivers }}
             </li>
             <li>
                 {% if form.cc.errors %} {{ form.cc.errors }}{% endif %}
@@ -21,6 +20,28 @@
             <li>
                 {% if form.subject.errors %} {{ form.subject.errors }}{% endif %}
                 <label for="id_subject">Subject:</label> {{ form.subject }}
+            </li>
+            <li id="message_box">
+                <ul class="controllers">
+                    <li>
+                        <div class="button bold"></div>
+                    </li>
+                    <li>
+                        <div class="button italic"></div>
+                    </li>
+                    <li>
+                        <div class="button underline"></div>
+                    </li>
+                    <li>
+                        <select id="font-color">
+                            <option selected disabled>Font color</option>
+                            <option value="black" selected>black</option>
+                            <option value="yellow">yellow</option>
+                            <option value="red">red</option>
+                            <option value="blue">blue</option>
+                        </select>
+                    </li>
+                </ul>
             </li>
             <li>
                 {% if form.message.errors %} {{ form.message.errors }}{% endif %}

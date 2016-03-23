@@ -1,10 +1,19 @@
 @import "compass/reset";
 @import "compass/css3";
 
+@import url(http://fonts.googleapis.com/css?family=Lato);
 
 $light_blue: rgb(127, 148, 209);
 $light_green: rgb(73, 187, 153);
+$light_gray: rgb(247, 247, 247);
+$dark_gray: rgb(32, 32, 32);
 
+body {
+    min-height: 100%;
+    width: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: $light_gray;
+}
 
 input[type="text"], input[type="button"], input[type="submit"], input[type="email"]{
     -webkit-appearance: none;
@@ -13,7 +22,7 @@ input[type="text"], input[type="button"], input[type="submit"], input[type="emai
 header{
     width: 100%;
     height: 50px;
-    background: rgba(255, 25, 28, 0.7);
+    background: $light_blue;
 }
 
 h1{
@@ -36,36 +45,40 @@ h1{
 section{
     height: 100%;
     width: 100%;
-    position: absolute;
-    background: rgb(247, 247, 247);
+    background: $light_gray;
+    margin-bottom: 120px;
     .column{
-        color: black;
+        color: $dark_gray;
     }
 }
 
-#email_form{
+.box{
     margin-top: 100px;
     @include box-sizing(border-box);
     border: 12px solid $light_blue;
     border-radius: 15px;
     padding: 10px;
+}
+
+#email_form{
     label{
         display: inline-block;
-        width: 100px;
+        width: 60px;
         text-align: right;
         padding-right: 10px;
     }
     li{
-        margin: 6px;
+        margin: 10px;
     }
     textarea{
         width: 100%;
         outline: none;
     }
     input{
-        width: auto;
+        width: 500px;
         height: 20px;
         font-size: 18px;
+        outline: none;
         &[type="submit"] {
             width: 100%;
             height: 45px;
@@ -82,6 +95,90 @@ section{
     }
 }
 
+.options{
+    text-align: center;
+    width: 100%;
+    display: inline-block;
+    a{
+        margin: 20px;
+        display: inline-block;
+        height: 100px;
+        width: 200px;
+        border-radius: 15px;
+        background: $light_green;
+        color: white;
+        line-height: 100px;
+        font-size: 24px;
+        text-decoration: none;
+        text-align: center;
+        border: 2px solid $light_gray;
+    }
+}
+
+.messages{
+    text-align: center;
+    font-size: 18px;
+    padding: 10px;
+}
+
+.hidden{
+    display: none;
+}
+
+.controllers{
+    height: 64px;
+    line-height: 64px;
+    &>li{
+        display: inline-block;
+        margin: 5px;
+        height: 10px;
+    }
+    select{
+        display: inline-block;
+        height: 24px;
+    }
+}
+
+.button{
+    margin-top: 10px;
+    height: 24px;
+    width: 24px;
+    border: 1px solid black;
+    line-height: 32px;
+    margin: 0px;
+    cursor: pointer;
+    &:hover{
+        background: white;
+    }
+    &.bold{
+        background: url(/static/img/font_bold.png) no-repeat;
+        background-size: 20px;
+        background-position: 2px 2px;
+    }
+    &.italic{
+        background: url(/static/img/font_italic.png) no-repeat;
+        background-size: 20px;
+        background-position: 2px 2px;
+    }
+    &.underline{
+        background: url(/static/img/font_underline.png) no-repeat;
+        background-size: 20px;
+        background-position: 2px 2px;
+    }
+}
+
+.textarea{
+    margin-top: 20px;
+    width: 100%;
+    background: white;
+    min-height: 200px;
+    border: 1px solid $dark_gray;
+    border-radius: 5px;
+    resize: auto;
+}
+
+
+
 footer{
     min-width: 100%;
     width: 100%;
@@ -90,4 +187,9 @@ footer{
     position: absolute;
     background-color: $light_blue;
     padding-top: 10px;
+    color: white;
+    font-size: 16px;
+    padding: 20px;
+    line-height: 1.5;
+    @include box-sizing(border-box);
 }

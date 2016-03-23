@@ -1,0 +1,19 @@
+{% extends "master.html" %}
+
+{% block content %}
+<div class="column">
+    <div class="box">
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <div class="options">
+            <a href="{% url "home" %}">Home</a>
+            <a href="{% url "new_email" %}">New Email</a>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -2,6 +2,7 @@ import mandrill
 import requests
 
 from mailer import settings
+from mailer.utils.exceptions import MailerRequestsAPIError
 
 
 MESSAGE = {
@@ -12,7 +13,6 @@ MESSAGE = {
     'inline_css': None,
     'subject': "",
     'tags': [],
-    'text': 'Example text content',
     'to': [{'email': 'recipient.email@example.com',
             'name': 'Recipient Name',
             'type': 'to'}],
@@ -26,13 +26,27 @@ MANDRILL_STATUSES = [
     "invalid"
 ]
 
+class ProviderResponse:
+
+    def __init__(self, status, provider):
+        self.status = status
+        self.provider = provider
+
+    def __str__(self):
+        if self.status == "sent":
+            return "Your email has been sent successfully with {}".format(self.provider)
+        else:
+            return "Something went wrong. Working on it!"
+
+
 class MandrillEmailEngine:
 
     def __init__(self, *args, **kwargs):
         self.mandrill_client = mandrill.Mandrill(settings.MANDRILL_APIKEY)
+        self.name = "Mandrill"
         self.message = MESSAGE
         self.message["from_email"] = kwargs.pop("sender", None)
-        self.message["html"] = kwargs.pop("text", None)
+        self.message["html"] = kwargs.pop("message", "None")
         self.message["subject"] = kwargs.pop("subject", None)
 
         self.message["to"] = []
@@ -50,54 +64,60 @@ class MandrillEmailEngine:
                 })
 
     def parse_email_status(self, response):
-        parsed_response = response.json()
         receivers_status = {}
+        global_status = ""
         try:
-            for item in parsed_response:
+            for item in response:
                 email = item['email']
                 status = item['status']
+                if status == "sent":
+                    global_status = "sent"
+
                 if status not in MANDRILL_STATUSES:
                     status = 'unknown'
+
                 receivers_status[email] = status
         except (KeyError, TypeError):
-            pass
-            # raise AnymailRequestsAPIError("Invalid Mandrill API response format")
-        return receivers_status
+            raise MailerRequestsAPIError("Mandrill responsed in invalid format")
+
+        return ProviderResponse(status, self.name)
 
     def get_api_call_data(self):
         return self.message
 
     def send(self):
         result = self.mandrill_client.messages.send(message=self.message, async=False)
+        result = self.parse_email_status(result)
         return result
 
 
 class MailGunEmailEngine:
 
     def __init__(self, *args, **kwargs):
+        self.name = "Mailgun"
         self.email = {
             "from": kwargs.pop("sender", None),
             "to": kwargs.pop("receivers", []),
             "subject": kwargs.pop("subject", None),
-            "text": kwargs.pop("text", None)
+            "html": kwargs.pop("message", None)
         }
         self.email["cc"] = kwargs.pop("carbon_copies", [])
 
     def parse_email_status(self, response):
         parsed_response = response.json()
+        status = ""
         try:
             message_id = parsed_response["id"]
-            mailgun_message = parsed_response["message"]
+            message = parsed_response["message"]
+            status = "sent"
         except (KeyError, TypeError):
-            pass
-            # raise AnymailRequestsAPIError("Invalid Mailgun API response format",
-            #                               email_message=message, payload=payload, response=response)
-        if not mailgun_message == ("Queued. Thank you."):
-            pass
-            # raise AnymailRequestsAPIError("Unrecognized Mailgun API message '%s'" % mailgun_message,
-            #                               email_message=message, payload=payload, response=response)
+            status = "invalid"
+            raise MailerRequestsAPIError("Invalid Mailgun API response format", response=response)
+        if not message == ("Queued. Thank you."):
+            status = "invalid"
+            raise MailerRequestsAPIError("Unrecognized Mailgun API message '{}'".format(message))
 
-        return {"status": "sent"}
+        return ProviderResponse(status, self.name)
 
     def get_api_call_data(self):
         return self.email
