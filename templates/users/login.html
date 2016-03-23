@@ -3,19 +3,24 @@
 {% block content %}
 <div class="column">
     <div class="box">
-        <form method="POST">
+        <form id="user-form" method="POST">
             {% csrf_token %}
             <ul>
+                {% if form.non_field_errors %}
+                <li class="error">
+                    {{ form.non_field_errors }}
+                </li>
+                {% endif %}
                 <li>
                     {% if form.email.errors %} {{ form.email.errors }}{% endif %}
                     <label for="id_email">Email:</label> {{ form.email }}
                 </li>
                 <li>
                     {% if form.password.errors %} {{ form.password.errors }}{% endif %}
-                    <label for="id_password">password:</label> {{ form.password }}
+                    <label for="id_password">Password:</label> {{ form.password }}
                 </li>
                 <li>
-                    <input type="submit" value="Login">
+                    <input type="submit" value="Login" class="green-button">
                 </li>
             </ul>
         </form>

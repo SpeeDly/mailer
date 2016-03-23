@@ -1,7 +1,6 @@
 from django.utils.module_loading import import_string
 
 from mailer import settings
-from mailer.utils.exceptions import MailerRequestsAPIError
 
 
 def get_connections():
@@ -30,16 +29,19 @@ class Email:
         return [s for s in self.__services]
 
     def send(self):
+        results = []
         for service in self.__services:
-            try:
-                email = service(**self.email_data)
-                result = email.send()
-            except MailerRequestsAPIError as e:
-                print(e.response)
-        return result
+            email = service(**self.email_data)
+            result = email.send()
+            results.append(result)
+            if result.is_successful():
+                break
+
+        return results
+
 
 def parse_to_html(message):
-    tags_convertion = [
+    tags_convention = [
         ["[strong]", "<strong>"],
         ["[/strong]", "</strong>"],
         ["[i]", "<i>"],
@@ -50,7 +52,7 @@ def parse_to_html(message):
         ["[/font]", "</font>"],
     ]
 
-    for rules in tags_convertion:
+    for rules in tags_convention:
         message = message.replace(rules[0], rules[1])
 
     message = message.replace("']", "'>")

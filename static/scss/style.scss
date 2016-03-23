@@ -7,6 +7,7 @@ $light_blue: rgb(127, 148, 209);
 $light_green: rgb(73, 187, 153);
 $light_gray: rgb(247, 247, 247);
 $dark_gray: rgb(32, 32, 32);
+$error_red: rgb(174, 68, 96);
 
 body {
     min-height: 100%;
@@ -23,6 +24,31 @@ header{
     width: 100%;
     height: 50px;
     background: $light_blue;
+    position: relative;
+    ul.top{
+        position: absolute;
+        color: white;
+        &.left{
+            top: 0px;
+            left: 0px;
+        }
+        &.right{
+            top: 0px;
+            right: 0px;
+            li{
+                margin-right: 20px;
+            }
+        }
+        li{
+            margin-left: 20px;
+            display: inline-block;
+            line-height: 50px;
+            a{
+                text-decoration: none;
+                color: white;
+            }
+        }
+    }
 }
 
 h1{
@@ -74,25 +100,26 @@ section{
         width: 100%;
         outline: none;
     }
-    input{
+    input[type="text"], input[type="email"]{
         width: 500px;
         height: 20px;
         font-size: 18px;
         outline: none;
-        &[type="submit"] {
-            width: 100%;
-            height: 45px;
-            margin-top: 30px;
-            color: white;
-            font-size: 18px;
-            outline: none;
-            text-decoration: none;
-            border-radius: 5px;
-            border: 0px;
-            background: $light_green;
-            cursor: pointer;
-        }
     }
+}
+
+input.green-button {
+    width: 100%;
+    height: 45px;
+    margin-top: 30px;
+    color: white;
+    font-size: 18px;
+    outline: none;
+    text-decoration: none;
+    border-radius: 5px;
+    border: 0px;
+    background: $light_green;
+    cursor: pointer;
 }
 
 .options{
@@ -177,7 +204,28 @@ section{
     resize: auto;
 }
 
-
+#user-form{
+    .error{
+        height: 50px;
+        background: $error_red;
+        line-height: 50px;
+        text-align: center;
+        color: white;
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+    li{
+        margin: 10px;
+    }
+    label{
+        display: inline-block;
+        width: 100px;
+        text-align: right;
+    }
+    input{
+        font-size: 20px;
+    }
+}
 
 footer{
     min-width: 100%;

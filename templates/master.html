@@ -16,7 +16,7 @@
         <meta name="viewport" content="width=device-width">
         <meta name="robots" content="noindex">
         <!--CSS block-->
-        <link rel="shortcut icon" href="{{ STATIC_URL }}img/favicon.ico" />
+        <link rel="shortcut icon" href="img/favicon.ico" />
         <link rel="stylesheet" href="{% static "css/style.css" %}">
 
         {% block stylesheets %}
@@ -29,11 +29,14 @@
         <!-- Navigation bar -->
         <header>
             {% if request.user.is_authenticated %}
-            <ul>
+            <ul class="top left">
                 <li>{{ request.user.email }}</li>
             </ul>
+            <ul class="top right">
+                <li><a href="{% url "logout" %}">Logout</a></li>
+            </ul>
             {% else %}
-            <ul>
+            <ul class="top left">
                 <li><a href="{% url "login" %}">Login</a></li>
                 <li><a href="{% url "register" %}">Register</a></li>
             </ul>

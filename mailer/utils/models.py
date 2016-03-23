@@ -19,7 +19,7 @@ class EmailListField(models.CharField):
     def get_db_prep_value(self, value, *args, **kwargs):
         if not value:
             return
-        return ','.join(unicode(s) for s in value)
+        return ','.join(str(s) for s in value)
 
     def value_to_string(self, obj):
         value = self._get_val_from_obj(obj)
