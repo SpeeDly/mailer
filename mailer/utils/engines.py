@@ -1,6 +1,5 @@
 import mandrill
 import requests
-from abc import ABCMeta
 
 from mailer import settings
 
