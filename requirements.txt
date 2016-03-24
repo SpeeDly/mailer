@@ -1,3 +1,2 @@
-django=1.9.4
-mandrill=1.0.57
-sendgrid=2.2.1
+django==1.9.4
+mandrill==1.0.57
