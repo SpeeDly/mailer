@@ -70,7 +70,7 @@ The functionality is quite limited at this point - sending text messages with ba
    [Uber]: <https://www.uber.com/>
    [git-repo-url]: <https://github.com/SpeeDly/mailer.git>
    [Georgi Zhuhov]: <https://github.com/SpeeDly>
-   [Mandril]: <https://www.mandrill.com/>
+   [Mandrill]: <https://www.mandrill.com/>
    [Mailgun]: <https://mailgun.com/>
    [Django]: <https://www.djangoproject.com/>
    [SCSS]: <http://sass-lang.com/>
