@@ -1,5 +1,6 @@
 import mandrill
 import requests
+from abc import ABCMeta
 
 from mailer import settings
 
@@ -12,13 +13,16 @@ MANDRILL_MESSAGE_TEMPLATE = {
     'inline_css': None,
     'subject': "",
     'tags': [],
-    'to2': [{'email': 'recipient.email@example.com',
-            'name': 'Recipient Name',
-            'type': 'to'}],
+    'to2': [{
+        'email': 'recipient.email@example.com',
+        'name': 'Recipient Name',
+        'type': 'to'
+        }],
 }
 
-class ProviderResponse:
-
+class ProviderResponse(object):
+    ''' Basic implementation for a common data format between the engines
+    '''
     def __init__(self, status, provider, receivers_status, original_response):
         self.status = status
         self.provider = provider
@@ -31,15 +35,37 @@ class ProviderResponse:
         else:
             return "{} failed to deliver your email.".format(self.provider)
 
+    def get_status(self):
+        '''Returning numeric representation of the status'''
+        return settings.STATUSES.index(self.status)
+
     def is_successful(self):
         if self.status == settings.STATUSES[0]:
             return True
         return False
 
 
-class MandrillEmailEngine:
+class EmailEngineInterface(object):
+    ''' Base abstract class for email engines
+        Based on the needs, it can be extended.
+    '''
+    def get_api_call_data(self):
+        ''' Should return the original answer from the provider'''
+        raise NotImplementedError(
+            "Class %s doesn't implement get_api_call_data()" % (self.__class__.__name__))
 
-    def __init__(self, *args, **kwargs):
+    def send(self):
+        ''' Should send email from the current provider
+            Returns ProviderResponse object
+        '''
+        raise NotImplementedError(
+            "Class %s doesn't implement send()" % (self.__class__.__name__))
+
+
+class MandrillEmailEngine(EmailEngineInterface):
+    ''' Mandrill email engine
+    '''
+    def __init__(self, **kwargs):
         self.mandrill_client = mandrill.Mandrill(settings.MANDRILL_APIKEY)
         self.name = "Mandrill"
         self.message = MANDRILL_MESSAGE_TEMPLATE
@@ -97,7 +123,7 @@ class MandrillEmailEngine:
         return result
 
 
-class MailGunEmailEngine:
+class MailGunEmailEngine(EmailEngineInterface):
 
     def __init__(self, *args, **kwargs):
         self.name = "Mailgun"
