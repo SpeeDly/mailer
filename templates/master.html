@@ -28,19 +28,6 @@
 
         <!-- Navigation bar -->
         <header>
-            {% if request.user.is_authenticated %}
-            <ul class="top left">
-                <li>{{ request.user.email }}</li>
-            </ul>
-            <ul class="top right">
-                <li><a href="{% url "logout" %}">Logout</a></li>
-            </ul>
-            {% else %}
-            <ul class="top left">
-                <li><a href="{% url "login" %}">Login</a></li>
-                <li><a href="{% url "register" %}">Register</a></li>
-            </ul>
-            {% endif %}
             <h1>Email service code challenge</h1>
         </header>
         <!--Content block-->

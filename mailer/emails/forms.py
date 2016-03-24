@@ -11,11 +11,7 @@ class EmailForm(forms.Form):
     cc = MultiEmailField(required=False)
     message = forms.CharField(widget=forms.Textarea)
 
-    def __init__(self,*args,**kwargs):
-        self.user_id = kwargs.pop('user_id', None)
-        super(EmailForm,self).__init__(*args,**kwargs)
-
     def save(self):
         data = self.cleaned_data
-        email = Email.objects.create(user_id=self.user_id, **data)
+        email = Email.objects.create(**data)
         return email

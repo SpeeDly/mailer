@@ -21,7 +21,6 @@ from mailer import settings
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^', include('mailer.users.urls')),
     url(r'^', include('mailer.emails.urls')),
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
